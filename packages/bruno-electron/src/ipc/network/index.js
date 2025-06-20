@@ -20,7 +20,7 @@ const { prepareRequest } = require('./prepare-request');
 const interpolateVars = require('./interpolate-vars');
 const { makeAxiosInstance } = require('./axios-instance');
 const { cancelTokens, saveCancelToken, deleteCancelToken } = require('../../utils/cancel-token');
-const { uuid, safeStringifyJSON, safeParseJSON, parseDataFromResponse, parseDataFromRequest } = require('../../utils/common');
+const { uuid, safeStringifyJSON, safeParseJSON, parseDataFromResponse, parseDataFromRequest, normalizeFilePath } = require('../../utils/common');
 const { chooseFileToSave, writeBinaryFile, writeFile } = require('../../utils/filesystem');
 const { addCookieToJar, getDomainsWithCookies, getCookieStringForUrl } = require('../../utils/cookies');
 const { createFormData } = require('../../utils/form-data');
@@ -99,9 +99,9 @@ const getCertsAndProxyConfig = async ({
         if (type === 'cert') {
           try {
             let certFilePath = interpolateString(clientCert?.certFilePath, interpolationOptions);
-            certFilePath = path.isAbsolute(certFilePath) ? certFilePath : path.join(collectionPath, certFilePath);
+            certFilePath = normalizeFilePath(path.isAbsolute(certFilePath) ? certFilePath : path.join(collectionPath, certFilePath));
             let keyFilePath = interpolateString(clientCert?.keyFilePath, interpolationOptions);
-            keyFilePath = path.isAbsolute(keyFilePath) ? keyFilePath : path.join(collectionPath, keyFilePath);
+            keyFilePath = normalizeFilePath(path.isAbsolute(keyFilePath) ? keyFilePath : path.join(collectionPath, keyFilePath));
 
             httpsAgentRequestFields['cert'] = fs.readFileSync(certFilePath);
             httpsAgentRequestFields['key'] = fs.readFileSync(keyFilePath);
@@ -112,7 +112,7 @@ const getCertsAndProxyConfig = async ({
         } else if (type === 'pfx') {
           try {
             let pfxFilePath = interpolateString(clientCert?.pfxFilePath, interpolationOptions);
-            pfxFilePath = path.isAbsolute(pfxFilePath) ? pfxFilePath : path.join(collectionPath, pfxFilePath);
+            pfxFilePath = normalizeFilePath(path.isAbsolute(pfxFilePath) ? pfxFilePath : path.join(collectionPath, pfxFilePath));
             httpsAgentRequestFields['pfx'] = fs.readFileSync(pfxFilePath);
           } catch (err) {
             console.error('Error reading pfx file', err);

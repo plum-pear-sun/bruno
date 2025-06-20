@@ -137,6 +137,11 @@ const parseDataFromRequest = (request) => {
   return parseDataFromResponse(requestCopy);
 };
 
+const normalizeFilePath = (path) => {
+  const platform = process.platform;
+  return platform === 'win32' ? path : path.replace(/\\|\\\\/g, '/');
+};
+
 module.exports = {
   uuid,
   stringifyJson,
@@ -147,5 +152,6 @@ module.exports = {
   generateUidBasedOnHash,
   flattenDataForDotNotation,
   parseDataFromResponse,
-  parseDataFromRequest
+  parseDataFromRequest,
+  normalizeFilePath,
 };
