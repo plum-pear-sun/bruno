@@ -6,8 +6,8 @@ const KeyMapping = {
   closeTab: { mac: 'command+w', windows: 'ctrl+w', name: 'Close Tab' },
   openPreferences: { mac: 'command+,', windows: 'ctrl+,', name: 'Open Preferences' },
   minimizeWindow: {
-    mac: 'command+Shift+Q',
-    windows: 'control+Shift+Q',
+    mac: 'command+shift+q',
+    windows: 'ctrl+shift+q',
     name: 'Minimize Window'
   },
   switchToPreviousTab: {
